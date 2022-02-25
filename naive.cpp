@@ -1,12 +1,19 @@
 #include "naive.h"
 #include <iostream>
 #include <string>
+#include <thread>
+#include <vector>
 
-int findPrimes(int targetNumber) {
+int naivePrimes(int targetNumber, int numberOfThreads) {
 
-	int n = 1;
+	int n = 0;
 	int temp = 0;
 	bool foundPrime;
+	std::vector<bool> vector;
+	
+	for (int i = 0; i < targetNumber; ++i) {
+		vector.push_back(0);
+	}
 	
 	while (n <= targetNumber) {
 		
@@ -22,11 +29,28 @@ int findPrimes(int targetNumber) {
 		}
 		
 		if (foundPrime) {
-			std::cout << n << std::endl;
+			vector[n] = 1;
 		}
 		
 		n++;
 	}
 	
+	printPrimes(vector);
+	
 	return 0;
 }
+
+void printPrimes(std::vector<bool> v) {
+	for (int i = 0; i < v.size(); ++i) {
+		if (v[i] == 1) {
+			std::cout << i << std::endl;
+		}
+	}
+}
+
+/*
+bool[] findPrimes(int startNumber, int endNumber) {
+	int arraySize = endNumber - startNumber;
+	bool[arraySize] array;
+} 
+*/

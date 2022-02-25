@@ -1,2 +1,4 @@
+#include <vector>
 
-int findPrimes(int targetNumber);
+void printPrimes(std::vector<bool> v);
+int naivePrimes(int targetNumber, int numberOfThreads);
