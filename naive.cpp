@@ -8,7 +8,6 @@ int naivePrimes(int targetNumber, int numberOfThreads) {
 
 	int n = 0;
 	int temp = 0;
-	bool foundPrime;
 	std::vector<bool> vector;
 	
 	for (int i = 0; i < targetNumber; ++i) {
@@ -17,18 +16,7 @@ int naivePrimes(int targetNumber, int numberOfThreads) {
 	
 	while (n <= targetNumber) {
 		
-		temp = 2;
-		bool foundPrime = true;
-		
-		while (temp < n) {
-			if (n % temp == 0) {
-				foundPrime = false;
-				break;
-			}
-			temp++;
-		}
-		
-		if (foundPrime) {
+		if (isPrime(n)) {
 			vector[n] = 1;
 		}
 		
@@ -38,6 +26,18 @@ int naivePrimes(int targetNumber, int numberOfThreads) {
 	printPrimes(vector);
 	
 	return 0;
+}
+
+bool isPrime(int n) {
+	
+	for (int temp = 2; temp < n; ++temp) {
+		if (n % temp == 0) {
+			return false;
+		}
+	}
+	
+	return true;
+
 }
 
 void printPrimes(std::vector<bool> v) {
