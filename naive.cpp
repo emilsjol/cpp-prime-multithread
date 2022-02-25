@@ -14,7 +14,7 @@ int naivePrimes(int targetNumber, int numberOfThreads) {
 	
 	std::vector<bool> numbers;
 	
-	std::chrono::time_point<std::chrono::steady_clock> t1, t2, t3, t4;
+	std::chrono::time_point<std::chrono::steady_clock> t1, t2, t3, t4, t5;
 	
 	t1 = std::chrono::steady_clock::now();
 	for (int i = 0; i < targetNumber; ++i) {
@@ -23,19 +23,32 @@ int naivePrimes(int targetNumber, int numberOfThreads) {
 	
 	t2 = std::chrono::steady_clock::now();
 	
-	findPrimes(0, targetNumber, numbers);
+	//thread passes by value, std::ref ensures invocability by wrapping
+	std::thread thr1(findPrimes, 0, targetNumber/2, std::ref(numbers));
+	std::thread thr2(findPrimes, targetNumber/2, targetNumber, std::ref(numbers));
 	
 	t3 = std::chrono::steady_clock::now();
 	
-	printPrimes(numbers);
+	
+	thr1.join();
+	thr2.join();
+	
 	t4 = std::chrono::steady_clock::now();
 	
+	printPrimes(numbers);
+	
+	t5 = std::chrono::steady_clock::now();
+	
+	
 	std::chrono::duration<double> fillEmptyVectorTime = t2 - t1;
-	std::chrono::duration<double> findPrimesTime = t3 - t2;
-	std::chrono::duration<double> printPrimesTime = t4 - t3;
+	std::chrono::duration<double> startThreadsTime = t3 - t2;
+	std::chrono::duration<double> joinThreadsTime = t4 - t3;
+	std::chrono::duration<double> printPrimesTime = t5 - t4;
 	std::cout << "fillEmptyVectorTime: " << fillEmptyVectorTime.count() << std::endl;
-	std::cout << "findPrimesTime: " << findPrimesTime.count() << std::endl;
+	std::cout << "startThreadsTime: " << startThreadsTime.count() << std::endl;
+	std::cout << "joinThreadsTime: " << joinThreadsTime.count() << std::endl;
 	std::cout << "printPrimesTime: " << printPrimesTime.count() << std::endl;
+	
 	
 	return 0;
 }
