@@ -1,11 +1,18 @@
 #include <iostream>
+#include <string>
 
-int main() {
+int main(int argc, char **argv) {
 	
-	int targetNumber = 100;
+	int targetNumber;
 	int n = 1;
 	int temp = 0;
 	bool foundPrime;
+	
+	if (argc == 0) {
+		targetNumber = 100;
+	} else {
+		targetNumber = std::stoi(argv[1]);
+	}
 	
 	while (n <= targetNumber) {
 		
