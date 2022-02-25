@@ -1,3 +1,4 @@
+#include "naive.h"
 #include <iostream>
 #include <string>
 
@@ -8,31 +9,13 @@ int main(int argc, char **argv) {
 	int temp = 0;
 	bool foundPrime;
 	
-	if (argc == 0) {
+	if (argc == 1) { //argv[0] finns alltid, argv[0] är programnamn
 		targetNumber = 100;
 	} else {
 		targetNumber = std::stoi(argv[1]);
 	}
 	
-	while (n <= targetNumber) {
-		
-		temp = 2;
-		bool foundPrime = true;
-		
-		while (temp < n) {
-			if (n % temp == 0) {
-				foundPrime = false;
-				break;
-			}
-			temp++;
-		}
-		
-		if (foundPrime) {
-			std::cout << n << std::endl;
-		}
-		
-		n++;
-	}
+	findPrimes(targetNumber);
 	
 	return 0;
 }

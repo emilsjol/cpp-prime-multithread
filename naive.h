@@ -1,0 +1,2 @@
+
+int findPrimes(int targetNumber);
