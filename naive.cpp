@@ -36,18 +36,22 @@ int naivePrimes(int targetNumber, int numberOfThreads, 	bool verbose, bool time,
 	
 	t4 = std::chrono::steady_clock::now();
 	
-	//printPrimes(numbers);
+	if (verbose) {
+		printPrimes(numbers);
+	}
 	
 	t5 = std::chrono::steady_clock::now();
 	
-	std::chrono::duration<double> fillEmptyVectorTime = t2 - t1;
-	std::chrono::duration<double> startThreadsTime = t3 - t2;
-	std::chrono::duration<double> joinThreadsTime = t4 - t3;
-	std::chrono::duration<double> printPrimesTime = t5 - t4;
-	std::cout << "fillEmptyVectorTime: " << fillEmptyVectorTime.count() << std::endl;
-	std::cout << "startThreadsTime: " << startThreadsTime.count() << std::endl;
-	std::cout << "joinThreadsTime: " << joinThreadsTime.count() << std::endl;
-	std::cout << "printPrimesTime: " << printPrimesTime.count() << std::endl;
+	if (time) {
+		std::chrono::duration<double> fillEmptyVectorTime = t2 - t1;
+		std::chrono::duration<double> startThreadsTime = t3 - t2;
+		std::chrono::duration<double> joinThreadsTime = t4 - t3;
+		std::chrono::duration<double> printPrimesTime = t5 - t4;
+		std::cout << "fillEmptyVectorTime: " << fillEmptyVectorTime.count() << std::endl;
+		std::cout << "startThreadsTime: " << startThreadsTime.count() << std::endl;
+		std::cout << "joinThreadsTime: " << joinThreadsTime.count() << std::endl;
+		std::cout << "printPrimesTime: " << printPrimesTime.count() << std::endl;
+	}
 	
 	return 0;
 }
