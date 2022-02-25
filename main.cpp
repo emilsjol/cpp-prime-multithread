@@ -1,6 +1,7 @@
 #include "naive.h"
 #include <iostream>
 #include <string>
+#include <chrono>
 
 int main(int argc, char **argv) {
 	
@@ -27,8 +28,21 @@ int main(int argc, char **argv) {
 			}
 		}
 	}
-
-	naivePrimes(targetNumber, numberOfThreads, verbose, time, benchmark);
+	
+	std::chrono::time_point<std::chrono::steady_clock> timeBefore, timeAfter;
+	timeBefore = std::chrono::steady_clock::now();
+	
+	if (benchmark == true) {
+		for (int i = 0; i < 10; i++) {
+			naivePrimes(targetNumber, numberOfThreads, verbose, time);		
+		}
+	} else {
+		naivePrimes(targetNumber, numberOfThreads, verbose, time);	
+	}
+	
+	timeAfter = std::chrono::steady_clock::now();
+	std::chrono::duration<double> calculatePrimeTime = timeAfter - timeBefore;
+	std::cout << "calculatePrimeTime: " << calculatePrimeTime.count() << std::endl;
 	
 	return 0;
 }

@@ -5,7 +5,7 @@
 #include <vector>
 #include <chrono>
 
-int naivePrimes(int targetNumber, int numberOfThreads, 	bool verbose, bool time, bool benchmark) {
+int naivePrimes(int targetNumber, int numberOfThreads, 	bool verbose, bool time) {
 
 	int n = 0;
 	int temp = 0;
