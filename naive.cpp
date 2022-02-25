@@ -5,13 +5,10 @@
 #include <vector>
 #include <chrono>
 
-int naivePrimes(int targetNumber, int numberOfThreads) {
+int naivePrimes(int targetNumber, int numberOfThreads, 	bool verbose, bool time, bool benchmark) {
 
 	int n = 0;
 	int temp = 0;
-	
-	//OBS TA BORT SENARE
-	numberOfThreads = 2;
 	
 	std::vector<std::thread> threads;
 	
@@ -28,10 +25,7 @@ int naivePrimes(int targetNumber, int numberOfThreads) {
 	
 	//thread passes by value, std::ref ensures invocability by wrapping
 	for (int i = 0; i < numberOfThreads; i++) {
-		threads.push_back(std::thread(findPrimes, 
-		targetNumber - (targetNumber * (numberOfThreads - i) / numberOfThreads), 
-		targetNumber - (targetNumber * ((numberOfThreads - 1) - i) / numberOfThreads), 
-		std::ref(numbers)));
+		threads.push_back(std::thread(findPrimes, i, numberOfThreads, std::ref(numbers)));
 	}
 	
 	t3 = std::chrono::steady_clock::now();
@@ -42,7 +36,7 @@ int naivePrimes(int targetNumber, int numberOfThreads) {
 	
 	t4 = std::chrono::steady_clock::now();
 	
-	printPrimes(numbers);
+	//printPrimes(numbers);
 	
 	t5 = std::chrono::steady_clock::now();
 	
@@ -58,17 +52,18 @@ int naivePrimes(int targetNumber, int numberOfThreads) {
 	return 0;
 }
 
-void findPrimes(int startIndex, int endIndex, std::vector<bool>& numbers) {
+void findPrimes(int startIndex, int jump, std::vector<bool>& numbers) {
 	
 	int n = startIndex;
+	int numberSize = numbers.size();
 	
-	while (n < endIndex) {
+	while (n < numberSize) {
 		
 		if (isPrime(n)) {
 			numbers[n] = true;
 		}
 		
-		n++;
+		n = n + jump;
 	}
 	
 }
