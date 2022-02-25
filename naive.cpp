@@ -10,6 +10,9 @@ int naivePrimes(int targetNumber, int numberOfThreads) {
 	int n = 0;
 	int temp = 0;
 	
+	//OBS TA BORT SENARE
+	numberOfThreads = 2;
+	
 	std::vector<std::thread> threads;
 	
 	std::vector<bool> numbers;
@@ -24,21 +27,24 @@ int naivePrimes(int targetNumber, int numberOfThreads) {
 	t2 = std::chrono::steady_clock::now();
 	
 	//thread passes by value, std::ref ensures invocability by wrapping
-	std::thread thr1(findPrimes, 0, targetNumber/2, std::ref(numbers));
-	std::thread thr2(findPrimes, targetNumber/2, targetNumber, std::ref(numbers));
+	for (int i = 0; i < numberOfThreads; i++) {
+		threads.push_back(std::thread(findPrimes, 
+		targetNumber - (targetNumber * (numberOfThreads - i) / numberOfThreads), 
+		targetNumber - (targetNumber * ((numberOfThreads - 1) - i) / numberOfThreads), 
+		std::ref(numbers)));
+	}
 	
 	t3 = std::chrono::steady_clock::now();
 	
-	
-	thr1.join();
-	thr2.join();
+	for (auto &th : threads) {
+		th.join();
+	}
 	
 	t4 = std::chrono::steady_clock::now();
 	
 	printPrimes(numbers);
 	
 	t5 = std::chrono::steady_clock::now();
-	
 	
 	std::chrono::duration<double> fillEmptyVectorTime = t2 - t1;
 	std::chrono::duration<double> startThreadsTime = t3 - t2;
@@ -49,11 +55,10 @@ int naivePrimes(int targetNumber, int numberOfThreads) {
 	std::cout << "joinThreadsTime: " << joinThreadsTime.count() << std::endl;
 	std::cout << "printPrimesTime: " << printPrimesTime.count() << std::endl;
 	
-	
 	return 0;
 }
 
-void findPrimes(int startIndex, int endIndex, std::vector<bool> &numbers) {
+void findPrimes(int startIndex, int endIndex, std::vector<bool>& numbers) {
 	
 	int n = startIndex;
 	
